@@ -3,8 +3,9 @@
 use Careminate\Http\Kernel;
 use Careminate\Http\Requests\Request;
 
-define('BASE_PATH', dirname(__DIR__));
 define('CAREMI_START', microtime(true));
+define('BASE_PATH', dirname(__DIR__));
+define('ROOT_PATH', dirname(__FILE__));
 define('ROOT_DIR', dirname(__FILE__));
 
 require dirname(__DIR__) . '/vendor/autoload.php';
