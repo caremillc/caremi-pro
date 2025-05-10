@@ -1,5 +1,6 @@
 <?php declare(strict_types=1); // public/index.php
 use Careminate\Http\Requests\Request;
+use Careminate\Http\Responses\Response;
 
 define('BASE_PATH', dirname(__DIR__));
 define('ROOT_DIR', dirname(__FILE__));
@@ -14,12 +15,15 @@ require BASE_PATH . '/bootstrap/app.php';
 require BASE_PATH . '/bootstrap/performance.php';
 
 // request received
-// request received
 $request = Request::createFromGlobals();
+// send response (string of content)
+$content = '<h1>Hello World from index page</h1>';
 
-dd($request);
+$response = new Response(content: $content, status: 200, headers: []);
+
+$response->send();
 
 // perform some logic
 
 // send response (string of content)
-echo 'Hello World';
+dd($response);
