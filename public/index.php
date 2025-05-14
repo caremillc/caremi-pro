@@ -22,5 +22,4 @@ $response = $kernel->handle($request);
 
 $response->send();
 
-// send response (string of content)
 dd($response);
