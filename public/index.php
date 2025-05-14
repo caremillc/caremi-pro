@@ -27,3 +27,5 @@ $kernel = new Kernel($router);
 $response = $kernel->handle($request);
 
 $response->send();
+
+dd($response);
