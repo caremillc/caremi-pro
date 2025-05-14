@@ -11,5 +11,3 @@ return [
         ['PUT', '/posts/{id:\d+}/update', [App\Http\Controllers\Post\PostController::class, 'update']],
         ['DELETE', '/posts/{id:\d+}/delete', [App\Http\Controllers\Post\PostController::class, 'delete']],
 ];
-
-?>
