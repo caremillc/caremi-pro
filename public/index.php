@@ -1,4 +1,6 @@
 <?php declare(strict_types=1); // public/index.php
+use Careminate\Http\Requests\Request;
+
 define('BASE_PATH', dirname(__DIR__));
 define('ROOT_DIR', dirname(__FILE__));
 define('CAREMI_START', microtime(true));
@@ -12,6 +14,10 @@ require BASE_PATH . '/bootstrap/app.php';
 require BASE_PATH . '/bootstrap/performance.php';
 
 // request received
+// request received
+$request = Request::createFromGlobals();
+
+dd($request);
 
 // perform some logic
 

@@ -12,5 +12,5 @@ $executionTime = $requestEndTime - $requestStartTime;
 
 
 // Log the execution time (this could be saved to a file or monitored)
-echo"<pre>";
+// echo"<pre>";
 echo "Request processed in " . number_format($executionTime, 4) . " seconds.\n";
