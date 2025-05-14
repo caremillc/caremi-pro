@@ -1,6 +1,9 @@
-<?php // config/container.php
+<?php declare(strict_types=1); // config/container.php
 
 $container = new \League\Container\Container();
+
+// Enable auto-resolution of dependencies through reflection
+$container->delegate(new \League\Container\ReflectionContainer(true));
 
 #parameters
 // Load application routes from an external configuration file.
@@ -14,9 +17,10 @@ $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\
 $container->extend(Careminate\Routing\RouterInterface::class)
           ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
           
-$container->add(Careminate\Http\Kernel::class)
-          ->addArgument(Careminate\Routing\RouterInterface::class);
+ $container->add(Careminate\Http\Kernel::class)
+          ->addArgument(Careminate\Routing\RouterInterface::class)
+          ->addArgument($container);
 
-// dd($container);
+//  dd($container);
 
 return $container;
