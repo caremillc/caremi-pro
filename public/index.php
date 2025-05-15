@@ -25,7 +25,7 @@ define('ROOT_DIR', dirname(__FILE__));
 // Load dependencies
 require dirname(__DIR__) . '/vendor/autoload.php';  // Composer autoloader
 require BASE_PATH . '/bootstrap/app.php';            // Application initialization
-require BASE_PATH . '/bootstrap/performance.php';   // Performance optimizations
+//require BASE_PATH . '/bootstrap/performance.php';   // Performance optimizations
 $container = require BASE_PATH . '/bootstrap/container.php';  // Load DI container
 
 /**

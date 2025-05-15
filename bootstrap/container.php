@@ -13,17 +13,27 @@ $appEnv     = env('APP_ENV', 'production'); // Default to 'production' if not se
 $appKey     = env('APP_KEY');               // Default to 'production' if not set
 $appVersion = env('APP_VERSION');
 
+#parameters
+// Load application routes from an external configuration file.
+$routes = include BASE_PATH . '/routes/web.php';
 # twig template path
 $templatesPath = BASE_PATH . '/templates';
-
+# sqlite connection
+$databaseUrl = 'sqlite:///' . BASE_PATH . '/storage/database.sqlite';
 
 $container->add('APP_ENV', new \League\Container\Argument\Literal\StringArgument($appEnv));
 $container->add('APP_KEY', new \League\Container\Argument\Literal\StringArgument($appKey));
 $container->add('APP_VERSION', new \League\Container\Argument\Literal\StringArgument($appVersion));
 
-#parameters
-// Load application routes from an external configuration file.
-$routes = include BASE_PATH . '/routes/web.php';
+# database connection
+$container->add(Careminate\Databases\Dbal\ConnectionFactory::class)
+    ->addArguments([
+        new \League\Container\Argument\Literal\StringArgument($databaseUrl) 
+    ]);
+
+$container->addShared(\Doctrine\DBAL\Connection::class, function () use ($container): \Doctrine\DBAL\Connection {
+    return $container->get(Careminate\Databases\Dbal\ConnectionFactory::class)->create();
+});
 
 # services
 # add alias for Router class,
