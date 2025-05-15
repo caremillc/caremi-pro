@@ -24,6 +24,7 @@ $users = $schema->createTable("users");
 $users->addColumn("id", Types::INTEGER, ["autoincrement" => true,]);
 $users->addColumn("name", Types::STRING, ["length" => 255]);
 $users->addColumn("email", Types::STRING, ["length" => 255]);
+$users->addColumn("role", Types::STRING, ["length" => 255,"notnull" => false]);// <-- allow null values
 $users->addColumn("password", Types::STRING, ["length" => 255]);
 $users->addColumn("created_at", Types::DATETIME_MUTABLE);
 $users->addColumn("updated_at", Types::DATETIME_MUTABLE);

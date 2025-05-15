@@ -16,6 +16,16 @@ return [
    ['PUT', '/posts/{id:\d+}/update', [App\Http\Controllers\Post\PostController::class, 'update']],
    ['DELETE', '/posts/{id:\d+}/delete', [App\Http\Controllers\Post\PostController::class, 'delete']],
 
+   //users
+   ['GET', '/users', [App\Http\Controllers\User\UserController::class, 'index']],
+   ['GET', '/users/create', [App\Http\Controllers\User\UserController::class, 'create']],
+   ['POST', '/users/store', [App\Http\Controllers\User\UserController::class, 'store']],
+   ['GET', '/users/{id:\d+}/show', [\App\Http\Controllers\User\UserController::class, 'show']],
+   ['GET', '/users/{id:\d+}/edit', [App\Http\Controllers\User\UserController::class, 'edit']],
+   ['PUT', '/users/{id:\d+}/update', [App\Http\Controllers\User\UserController::class, 'update']],
+   ['DELETE', '/users/{id:\d+}/delete', [App\Http\Controllers\User\UserController::class, 'delete']],
+
+
 //response
    ['GET', '/Hello/{name:.+}', function (string $name) {
        return new Response("Hello $name");
