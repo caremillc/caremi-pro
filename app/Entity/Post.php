@@ -9,8 +9,9 @@ class Post extends Entity
         private ?int $id,
         private string $title,
         private string $description,
-         private ?string $image = null,
+        private ?string $image = null,
         private \DateTimeImmutable $createdAt,
+        private ?\DateTimeImmutable $updatedAt = null,
     ) {}
 
     public static function create(
@@ -19,8 +20,9 @@ class Post extends Entity
         string $description,
         ?string $image = null,
         ?\DateTimeImmutable $createdAt = null,
+        ?\DateTimeImmutable $updatedAt = null,
     ): Post {
-        return new self($id, $title, $description, $image, $createdAt ?? new \DateTimeImmutable());
+        return new self($id, $title, $description, $image, $createdAt ?? new \DateTimeImmutable(), $updatedAt ?? new \DateTimeImmutable());
     }
 
     public function getId(): ?int
@@ -70,5 +72,14 @@ class Post extends Entity
     public function setCreatedAt(\DateTimeImmutable $createdAt): void
     {
         $this->createdAt = $createdAt;
+    }
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): void
+    {
+        $this->updatedAt = $updatedAt;
     }
 }

@@ -2,12 +2,16 @@
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
+use App\Repository\PostMapper;
 use App\Http\Controllers\Controller;
 use Careminate\Support\FileUploader;
 use Careminate\Http\Responses\Response;
 
+
 class PostController extends Controller
-{
+{ 
+     public function __construct(private PostMapper $postMapper){}
+     
     public function index(): Response
     { 
         $posts = "All Posts";
@@ -42,7 +46,8 @@ class PostController extends Controller
 
         // Create the post
         $post = Post::create(null,$title, $description, $imagePath, null);
-       dd($post);
+
+        $this->postMapper->save($post);
         // Debugging output (remove after testing)
 
         return new Response("<h1>Post stored successfully</h1>", 201);

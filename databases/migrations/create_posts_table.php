@@ -26,7 +26,7 @@ $posts->addColumn("title", Types::STRING, ["length" => 255]);
 $posts->addColumn("description", Types::STRING, ["length" => 255]);
 $posts->addColumn("image", Types::BLOB, ["length" => 255,"notnull" => false]);// <-- allow null values
 $posts->addColumn("created_at", Types::DATETIME_MUTABLE);
-$posts->addColumn("updated_at", Types::DATETIME_MUTABLE);
+$posts->addColumn("updated_at", Types::DATETIME_MUTABLE,["notnull" => false]);
 
 $posts->setPrimaryKey(["id"]);
 $posts->addUniqueIndex(["title"]);
