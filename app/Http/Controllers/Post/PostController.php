@@ -3,6 +3,7 @@ namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
 use App\Repository\PostMapper;
+use App\Repository\PostRepository;
 use App\Http\Controllers\Controller;
 use Careminate\Support\FileUploader;
 use Careminate\Http\Responses\Response;
@@ -10,13 +11,18 @@ use Careminate\Http\Responses\Response;
 
 class PostController extends Controller
 { 
-     public function __construct(private PostMapper $postMapper){}
+      public function __construct(
+        private PostMapper $postMapper,
+        private PostRepository $postRepository
+    ){}
      
     public function index(): Response
-    { 
-        $posts = "All Posts";
+    {
+        // Retrieve all posts from the repository
+        $posts = $this->postRepository->findAll();
 
-       return view('posts/index.html.twig', compact('posts'));
+        // Render the view and pass the posts data to it
+        return view('posts/index.html.twig', compact('posts'));
     }
 
     public function create(): Response
@@ -50,21 +56,21 @@ class PostController extends Controller
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
 
-        return new Response("<h1>Post stored successfully</h1>", 201);
+        return Response::redirect("/posts");
     }
     
-    public function show(int $id): Response
+   public function show(int $id): Response
     {
-        // Your logic here
-        $postId = "<h1>Show Post with ID: $id</h1>";
-        return view('posts/show.html.twig', compact('postId'));
+        $post = $this->postRepository->findById($id);
+
+        return view('posts/show.html.twig', compact('post'));
     }
 
     public function edit(int $id): Response
     {
         // Your logic here
-        $postId = "<h1>Edit Post with ID: $id</h1>";
-        return view('posts/edit.html.twig', compact('postId'));
+         $post = $this->postRepository->findById($id);
+        return view('posts/edit.html.twig', compact('post'));
     }
 
     public function update(int $id): Response
