@@ -7,16 +7,16 @@ use Careminate\Http\Responses\Response;
 
 class HomeController extends Controller
 { 
-    public function __construct(private Widget $widget, private Environment $twig)
-    {
-    }
+    public function __construct(private Widget $widget)
+    {}
 
     public function index(): Response
     {
+        // dd($this->container->get('twig'));
         // Rather than using dd() which is causing issues, let's render a template
         try {
             // Verify Twig is working by rendering a simple template
-            $content = $this->twig->render('home.html.twig', [
+            $content = $this->container->get('twig')->render('home.html.twig', [
                 'widgetName' => $this->widget->name,
                 'title' => 'Home Page'
             ]);
