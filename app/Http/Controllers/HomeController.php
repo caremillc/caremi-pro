@@ -16,12 +16,12 @@ class HomeController extends Controller
         // Rather than using dd() which is causing issues, let's render a template
         try {
             // Verify Twig is working by rendering a simple template
-            $content = $this->container->get('twig')->render('home.html.twig', [
+            $content = view('home.html.twig', [
                 'widgetName' => $this->widget->name,
                 'title' => 'Home Page'
             ]);
             
-            return new Response($content);
+            return new Response("it works");
         } catch (\Exception $e) {
             // If there's an error with Twig, display a simple message
             $content = "<h1>Hello {$this->widget->name} from HomeController</h1>";
