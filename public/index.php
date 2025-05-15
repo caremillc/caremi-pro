@@ -49,4 +49,4 @@ $response = $kernel->handle($request);
 // Send response to client
 $response->send(); 
 
-dd($response);
+// dd($response);
