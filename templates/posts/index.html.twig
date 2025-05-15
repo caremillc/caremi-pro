@@ -36,9 +36,9 @@
                                 {% endif %}
                             </td>
                             <td>
-                                <a href="/posts/{{ post.id }}" class="btn btn-sm btn-primary">View</a>
+                                <a href="/posts/{{ post.id }}/show" class="btn btn-sm btn-primary">View</a>
                                 <a href="/posts/{{ post.id }}/edit" class="btn btn-sm btn-warning">Edit</a>
-                                <form action="/posts/{{ post.id }}" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                <form action="/posts/{{ post.id }}/delete" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this post?');">
                                     <input type="hidden" name="_method" value="DELETE">
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </form>
