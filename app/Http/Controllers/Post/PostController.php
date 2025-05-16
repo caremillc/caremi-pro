@@ -64,7 +64,7 @@ class PostController extends Controller
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
 
-        return Response::redirect("/posts");
+        return redirect("/posts");
     }
 
     public function show(int $id): Response
