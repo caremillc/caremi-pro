@@ -58,6 +58,12 @@ $container->add(\Careminate\Http\Controllers\AbstractController::class);
 $container->inflector(\Careminate\Http\Controllers\AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
 
+    //add session to container 
+$container->addShared(
+    Careminate\Sessions\SessionInterface::class,
+    Careminate\Sessions\Session::class
+);
+
 // dd($container);
 
 return $container;
