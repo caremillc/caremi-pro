@@ -47,11 +47,17 @@ $container->add(Careminate\Http\Kernel::class)
     ->addArgument(Careminate\Routing\RouterInterface::class)
     ->addArgument($container);
 
-$container->addShared('filesystem-loader', \Twig\Loader\FilesystemLoader::class)
-    ->addArgument(new \League\Container\Argument\Literal\StringArgument($templatesPath));
+# twig Environment
+//add session to twig template 
+$container->add('template-renderer-factory', \Careminate\Template\TwigFactory::class)
+    ->addArguments([
+        \Careminate\Sessions\SessionInterface::class,
+        new \League\Container\Argument\Literal\StringArgument($templatesPath)
+    ]);
 
-    $container->addShared('twig', \Twig\Environment::class)
-    ->addArgument('filesystem-loader');
+$container->addShared('twig', function () use ($container) {
+    return $container->get('template-renderer-factory')->create();
+});
 
 $container->add(\Careminate\Http\Controllers\AbstractController::class);
 
