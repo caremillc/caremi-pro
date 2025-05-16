@@ -47,6 +47,29 @@
                     {% endfor %}
                 </tbody>
             </table>
+          <div class="mt-4">
+        <nav>
+            <ul class="pagination justify-content-center">
+                {# Previous button #}
+                <li class="page-item {{ currentPage <= 1 ? 'disabled' : '' }}">
+                    <a class="page-link" href="?page={{ currentPage - 1 }}" tabindex="-1">Previous</a>
+                </li>
+
+                {# Page numbers #}
+                {% for page in 1..totalPages %}
+                    <li class="page-item {{ page == currentPage ? 'active' : '' }}">
+                        <a class="page-link" href="?page={{ page }}">{{ page }}</a>
+                    </li>
+                {% endfor %}
+
+                {# Next button #}
+                <li class="page-item {{ currentPage >= totalPages ? 'disabled' : '' }}">
+                    <a class="page-link" href="?page={{ currentPage + 1 }}">Next</a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+
         </div>
     {% endif %}
 {% endblock %}

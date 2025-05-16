@@ -1,28 +1,36 @@
-<?php declare(strict_types=1);
+<?php declare (strict_types = 1);
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
+use App\Http\Controllers\Controller;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
-use App\Http\Controllers\Controller;
-use Careminate\Support\FileUploader;
+use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
-
+use Careminate\Support\FileUploader;
 
 class PostController extends Controller
-{ 
-      public function __construct(
+{
+    public function __construct(
         private PostMapper $postMapper,
         private PostRepository $postRepository
-    ){}
-     
-    public function index(): Response
-    {
-        // Retrieve all posts from the repository
-        $posts = $this->postRepository->findAll();
+    ) {}
 
-        // Render the view and pass the posts data to it
-        return view('posts/index.html.twig', compact('posts'));
+    public function index()
+    {
+        $request = new Request();
+        $page    = max(1, (int) $request->get('page', 1));
+        $perPage = 5;
+        $offset  = ($page - 1) * $perPage;
+
+        $posts = $this->postRepository->paginate($perPage, $offset);
+        $total = $this->postRepository->count();
+
+        return view('posts/index.html.twig', [
+            'posts'       => $posts,
+            'currentPage' => $page,
+            'totalPages'  => ceil($total / $perPage),
+        ]);
     }
 
     public function create(): Response
@@ -33,9 +41,9 @@ class PostController extends Controller
 
     public function store(): Response
     {
-        $title = $this->request->input('title') ?? null;
+        $title       = $this->request->input('title') ?? null;
         $description = $this->request->input('description') ?? null;
-        $imagePath = null;
+        $imagePath   = null;
 
         if (empty($title) || empty($description)) {
             return new Response("<h1>Error: Title and description are required.</h1>", 400);
@@ -51,15 +59,15 @@ class PostController extends Controller
         }
 
         // Create the post
-        $post = Post::create(null,$title, $description, $imagePath, null);
+        $post = Post::create(null, $title, $description, $imagePath, null);
 
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
 
         return Response::redirect("/posts");
     }
-    
-   public function show(int $id): Response
+
+    public function show(int $id): Response
     {
         $post = $this->postRepository->findById($id);
 
@@ -69,7 +77,7 @@ class PostController extends Controller
     public function edit(int $id): Response
     {
         // Your logic here
-         $post = $this->postRepository->findById($id);
+        $post = $this->postRepository->findById($id);
         return view('posts/edit.html.twig', compact('post'));
     }
 
