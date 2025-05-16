@@ -8,9 +8,9 @@ class HomeController extends Controller
 {
     public function __construct(private Widget $widget){}
 
-    public function index(): Response
+     public function index(): Response
     {
-        $title = "Home Page";
-        return view('home.html.twig', compact('title'));
+		// $this->session->set('title', 'Editing Post');
+        return view('home.html.twig');
     }
 }
