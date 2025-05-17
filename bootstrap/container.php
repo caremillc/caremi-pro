@@ -79,6 +79,13 @@ $container->addShared(
     Careminate\Sessions\Session::class
 );
 
+// add Middleware\RouterDispatch
+$container->add(\Careminate\Http\Middlewares\RouterDispatch::class)
+    ->addArguments([
+        \Careminate\Routing\RouterInterface::class,
+        $container
+    ]);
+    
 // dd($container);
 
 return $container;
