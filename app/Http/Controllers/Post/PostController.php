@@ -2,13 +2,13 @@
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
+use App\Http\Controllers\Controller;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
-use App\Http\Controllers\Controller;
-use Careminate\Support\FileUploader;
 use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
 use Careminate\Sessions\SessionInterface;
+use Careminate\Support\FileUploader;
 
 class PostController extends Controller
 {
@@ -16,7 +16,7 @@ class PostController extends Controller
         private PostMapper $postMapper,
         private PostRepository $postRepository,
         private SessionInterface $session
-    ){}
+    ) {}
 
     public function index()
     {
@@ -65,8 +65,8 @@ class PostController extends Controller
 
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
-        
-         $this->session->setFlash('success', sprintf('Post "%s" successfully created', $title));
+
+        $this->session->setFlash('success', sprintf('Post "%s" successfully created', $title));
 
         return redirect("/posts");
     }
@@ -96,4 +96,5 @@ class PostController extends Controller
         // Your logic here
         return new Response("<h1>Delete Post with ID: $id</h1>");
     }
+    
 }
