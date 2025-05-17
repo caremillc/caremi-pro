@@ -43,9 +43,18 @@ $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\
 $container->extend(Careminate\Routing\RouterInterface::class)
     ->addMethodCall('setRoutes', [new League\Container\Argument\Literal\ArrayArgument($routes)]);
 
+// Register the Kernel service and inject its dependency on RouterInterface.
+$container->add(
+    \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class,
+    \Careminate\Http\Middlewares\RequestHandler::class
+);
+
 $container->add(Careminate\Http\Kernel::class)
-    ->addArgument(Careminate\Routing\RouterInterface::class)
-    ->addArgument($container);
+    ->addArguments([
+        Careminate\Routing\RouterInterface::class,
+        $container,
+        \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class
+    ]);
 
 # twig Environment
 //add session to twig template 
