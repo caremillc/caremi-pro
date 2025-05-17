@@ -15,7 +15,7 @@ class PostController extends Controller
     public function __construct(
         private PostMapper $postMapper,
         private PostRepository $postRepository,
-        private SessionInterface $session
+        // private SessionInterface $session
     ) {}
 
     public function index()
@@ -66,7 +66,7 @@ class PostController extends Controller
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
 
-        $this->session->setFlash('success', sprintf('Post "%s" successfully created', $title));
+        $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title));
 
         return redirect("/posts");
     }
