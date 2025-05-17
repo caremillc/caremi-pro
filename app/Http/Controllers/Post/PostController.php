@@ -2,19 +2,21 @@
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
-use App\Http\Controllers\Controller;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
+use App\Http\Controllers\Controller;
+use Careminate\Support\FileUploader;
 use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
-use Careminate\Support\FileUploader;
+use Careminate\Sessions\SessionInterface;
 
 class PostController extends Controller
 {
     public function __construct(
         private PostMapper $postMapper,
-        private PostRepository $postRepository
-    ) {}
+        private PostRepository $postRepository,
+        private SessionInterface $session
+    ){}
 
     public function index()
     {
@@ -63,6 +65,8 @@ class PostController extends Controller
 
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
+        
+         $this->session->setFlash('success', sprintf('Post "%s" successfully created', $title));
 
         return redirect("/posts");
     }
