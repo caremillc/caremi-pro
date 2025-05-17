@@ -47,7 +47,7 @@ $container->extend(Careminate\Routing\RouterInterface::class)
 $container->add(
     \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class,
     \Careminate\Http\Middlewares\RequestHandler::class
-);
+)->addArgument($container);
 
 $container->add(Careminate\Http\Kernel::class)
     ->addArguments([
