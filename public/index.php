@@ -50,3 +50,4 @@ $response = $kernel->handle($request);
 $response->send(); 
 
 // dd($response);
+$kernel->terminate($request, $response);
