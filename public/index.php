@@ -6,7 +6,6 @@ use Careminate\Http\Requests\Request;
 define('BASE_PATH', dirname(__DIR__));
 define('CAREMI_START', microtime(true));
 define('ROOT_DIR', dirname(__FILE__));
-define('ROOT_PATH', dirname(__FILE__));
 
 require dirname(__DIR__) . '/vendor/autoload.php';
 require BASE_PATH . '/bootstrap/app.php';
