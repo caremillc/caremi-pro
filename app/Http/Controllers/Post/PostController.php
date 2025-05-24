@@ -39,9 +39,9 @@ class PostController extends Controller
         return view('posts/create.html.twig');
     }
 
-    public function store(): Response
+   public function store(): Response
     {
-
+       
         $title       = $this->request->input('title');
         $description = $this->request->input('description');
         $imagePath   = null;
@@ -62,11 +62,11 @@ class PostController extends Controller
         // Create the post
         $post = Post::create(null, $title, $description, $imagePath, null);
 
-        //   dd($post);
+    //   dd($post);
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
-        // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
-        return new Response("/posts");
+       // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
+         return redirect("/posts");
     }
 
     public function show(int $id): Response
