@@ -24,6 +24,15 @@ $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\
 $container->add(Careminate\Http\Kernel::class)
           ->addArgument(Careminate\Routing\RouterInterface::class);
 
+          #parameters
+// Load application routes from an external configuration file.
+$routes = include BASE_PATH . '/routes/web.php';
+
+// Extend RouterInterface definition to inject routes
+$container->extend(Careminate\Routing\RouterInterface::class)
+          ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
+          
+// Debug output (should be removed in production)
 dd($container);
 
 return $container;
