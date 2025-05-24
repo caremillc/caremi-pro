@@ -25,7 +25,7 @@ define('ROOT_DIR', dirname(__FILE__));
 // Load dependencies
 require dirname(__DIR__) . '/vendor/autoload.php';  // Composer autoloader
 require BASE_PATH . '/bootstrap/app.php';            // Application initialization
-require BASE_PATH . '/bootstrap/performance.php';   // Performance optimizations
+//require BASE_PATH . '/bootstrap/performance.php';   // Performance optimizations
 $container = require BASE_PATH . '/bootstrap/container.php';  // Load DI container
 
 /**
@@ -48,3 +48,6 @@ $response = $kernel->handle($request);
 
 // Send response to client
 $response->send(); 
+
+// if terminate is active session flah message will not work
+// $kernel->terminate($request, $response);
