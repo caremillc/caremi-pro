@@ -87,6 +87,14 @@ $container->add(\Careminate\Http\Controllers\AbstractController::class);
 $container->inflector(\Careminate\Http\Controllers\AbstractController::class)
     ->invokeMethod('setContainer', [$container]);
 
+// Add the Session service to the container as a shared (singleton) instance.
+// Binds the SessionInterface to the concrete Session implementation,
+// ensuring that all dependencies requiring SessionInterface will receive the same shared instance.
+$container->addShared(
+    Careminate\Sessions\SessionInterface::class,
+    Careminate\Sessions\Session::class
+);
+
 // Debug output (should be removed in production)
 // dd($container);
 
