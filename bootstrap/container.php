@@ -17,14 +17,21 @@
 
 $container = new \League\Container\Container();
 
+// Enable auto-resolution of dependencies through reflection
+$container->delegate(new \League\Container\ReflectionContainer(true));
+
 // Bind RouterInterface to Router implementation
 $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\Router::class);
 
 // Register the HTTP Kernel with its dependencies
-$container->add(Careminate\Http\Kernel::class)
-          ->addArgument(Careminate\Routing\RouterInterface::class);
+// $container->add(Careminate\Http\Kernel::class)
+//           ->addArgument(Careminate\Routing\RouterInterface::class);
 
-          #parameters
+$container->add(\Careminate\Http\Kernel::class)
+          ->addArgument(\Careminate\Routing\RouterInterface::class)
+          ->addArgument($container);
+
+#parameters
 // Load application routes from an external configuration file.
 $routes = include BASE_PATH . '/routes/web.php';
 
