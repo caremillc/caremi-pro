@@ -1,4 +1,4 @@
-<?php declare (strict_types = 1);
+<?php declare(strict_types=1);
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
@@ -10,14 +10,15 @@ use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
 use Careminate\Sessions\SessionInterface;
 
+
 class PostController extends Controller
-{
-   public function __construct(
+{ 
+    public function __construct(
         private PostMapper $postMapper,
         private PostRepository $postRepository,
-        private SessionInterface $session
+        // private SessionInterface $session
     ){}
-
+    
     public function index()
     {
         $request = new Request();
@@ -67,10 +68,11 @@ class PostController extends Controller
     //   dd($post);
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
-         $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
+       $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
          return redirect("/posts");
     }
-    public function show(int $id): Response
+
+   public function show(int $id): Response
     {
         $post = $this->postRepository->findById($id);
 
@@ -84,10 +86,11 @@ class PostController extends Controller
         return view('posts/edit.html.twig', compact('post'));
     }
 
-    public function update(int $id): Response
+
+   public function update(int $id): Response
     {
         $request = new Request();
-        $post    = $this->postRepository->findOrFail($id);
+        $post = $this->postRepository->findOrFail($id);
 
         $title       = $this->request->input('title');
         $description = $this->request->input('description');
@@ -109,7 +112,7 @@ class PostController extends Controller
     public function destroy(int $id): Response
     {
         $this->postRepository->delete($id);
-        // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully Deleted')); // step 2
+       // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully Deleted')); // step 2
         return Response::redirect("/posts");
     }
 }
