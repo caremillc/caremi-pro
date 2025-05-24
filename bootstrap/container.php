@@ -69,15 +69,24 @@ $routes = include BASE_PATH . '/routes/web.php';
 $container->extend(Careminate\Routing\RouterInterface::class)
           ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
        
-// Register the Twig FilesystemLoader as a shared (singleton) service.
-// It will use the provided $templatesPath as the base directory for template files.
-$container->addShared('filesystem-loader', \Twig\Loader\FilesystemLoader::class)
-    ->addArgument(new \League\Container\Argument\Literal\StringArgument($templatesPath));
+# Start Twig Environment
 
-// Register the Twig Environment as a shared (singleton) instance
-// and inject the 'filesystem-loader' service into its constructor.
-$container->addShared('twig', \Twig\Environment::class)
-    ->addArgument('filesystem-loader');
+// Register a factory that will be responsible for creating the Twig environment instance.
+// The factory is passed the SessionInterface (for making session data available in views)
+// and the templates path as a string literal.
+$container->add('template-renderer-factory', \Careminate\Template\TwigFactory::class)
+    ->addArguments([
+        \Careminate\Sessions\SessionInterface::class,                      // Inject session service
+        new \League\Container\Argument\Literal\StringArgument($templatesPath) // Path to view templates
+    ]);
+
+// Add a shared Twig environment instance to the container.
+// This uses the factory registered above to build and return the Twig instance.
+// The closure ensures the environment is created only once and reused (singleton).
+$container->addShared('twig', function () use ($container) {
+    return $container->get('template-renderer-factory')->create();
+});
+
 
 // Register the AbstractController so it can be resolved by the container.
 $container->add(\Careminate\Http\Controllers\AbstractController::class);
