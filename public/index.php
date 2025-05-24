@@ -12,7 +12,7 @@ define('ROOT_DIR', dirname(__FILE__));
 require dirname(__DIR__) . '/vendor/autoload.php';
 require BASE_PATH . '/bootstrap/app.php';
 require BASE_PATH . '/bootstrap/performance.php';
-
+$container = require BASE_PATH . '/bootstrap/container.php';
 // request received
 // request received
 $request = Request::createFromGlobals();
