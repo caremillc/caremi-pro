@@ -1,4 +1,4 @@
-<?php 
+<?php  declare(strict_types=1);
 namespace App\Models;
 
 use App\Entity\User;
@@ -9,7 +9,9 @@ class Register
     private string $username,$email,$password;
     private array $errors = [];
 
-    public function __construct(private UserMapper $userMapper){}
+    public function __construct(
+        private UserMapper $userMapper
+    ){}
 
     public function setFields(string $username, string $email, string $password): void
     {
