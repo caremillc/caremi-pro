@@ -40,6 +40,6 @@ $container->extend(Careminate\Routing\RouterInterface::class)
           ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
           
 // Debug output (should be removed in production)
-dd($container);
+// dd($container);
 
 return $container;
