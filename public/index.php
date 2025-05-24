@@ -28,4 +28,4 @@ $response = $kernel->handle($request);
 
 $response->send();
 
-// dd($response);
+dd($response);
