@@ -1,44 +1,35 @@
-<?php
+<?php 
 
-declare(strict_types=1);
+class CreateUsersTable extends Migration
+{
+    /**
+     * Run the migration
+     */
+    public function up(): void
+    {
+        /** @var Builder $schema */
+        $schema = $this->schema;
+        
+        $schema->create('users', function (Blueprint $table) {
+            // Primary key
+            $table->increments('id');
+            $table->string('username', 50)->nullable();
+            $table->string('email', 100)->unique();
+            $table->string('password');
+            $table->rememberToken();
+            $table->timestamps();
+            $table->softDeletes();
+            $table->index('email');
+            $table->index('username');
+        });
+    }
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
-// Define base path constant
-define('BASE_PATH', realpath(__DIR__ . '/../../'));
-
-// Load container
-$container = require BASE_PATH . '/bootstrap/container.php';
-
-// Get the shared Doctrine DBAL connection from container
-/** @var \Doctrine\DBAL\Connection $connection */
-$connection = $container->get(\Doctrine\DBAL\Connection::class);
-
-// Build schema using DBAL Schema API
-use Doctrine\DBAL\Schema\Schema;
-use Doctrine\DBAL\Types\Types;
-
-$schema = new Schema();
-$users = $schema->createTable("users");
-
-$users->addColumn("id", Types::INTEGER, ["autoincrement" => true]);
-$users->addColumn("username", Types::STRING, ["length" => 255]);
-$users->addColumn("email", Types::STRING, ["length" => 255]);
-$users->addColumn("role", Types::STRING, ["length" => 255, "notnull" => false]); // nullable
-$users->addColumn("password", Types::STRING, ["length" => 255]);
-$users->addColumn("created_at", Types::DATETIME_MUTABLE,["notnull" => false]);
-$users->addColumn("updated_at", Types::DATETIME_MUTABLE,["notnull" => false]);
-
-$users->setPrimaryKey(["id"]);
-$users->addUniqueIndex(["email"]);
-
-// Generate and run SQL
-$platform = $connection->getDatabasePlatform();
-$queries = $schema->toSql($platform);
-
-foreach ($queries as $query) {
-    echo "Executing: $query\n";
-    $connection->executeStatement($query);
+    /**
+     * Reverse the migration
+     */
+    public function down(): void
+    {
+        $this->schema->dropIfExists('users');
+    }
 }
 
-echo "✅ users table created successfully.\n";
