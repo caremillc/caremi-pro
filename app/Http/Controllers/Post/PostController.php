@@ -1,22 +1,21 @@
-<?php declare(strict_types=1);
+<?php declare (strict_types = 1);
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
+use App\Http\Controllers\Controller;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
-use App\Http\Controllers\Controller;
-use Careminate\Support\FileUploader;
 use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
-
+use Careminate\Support\FileUploader;
 
 class PostController extends Controller
-{ 
-      public function __construct(
+{
+    public function __construct(
         private PostMapper $postMapper,
         private PostRepository $postRepository
-    ){}
-    
+    ) {}
+
     public function index()
     {
         $request = new Request();
@@ -42,7 +41,7 @@ class PostController extends Controller
 
     public function store(): Response
     {
-       
+
         $title       = $this->request->input('title');
         $description = $this->request->input('description');
         $imagePath   = null;
@@ -62,21 +61,22 @@ class PostController extends Controller
 
         // Create the post
         $post = Post::create(null, $title, $description, $imagePath, null);
-    //   dd($post);
+
+        //   dd($post);
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
-       // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
-         return new Response("/posts");
+        // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
+        return new Response("/posts");
     }
 
-   public function show(int $id): Response
+    public function show(int $id): Response
     {
         $post = $this->postRepository->findById($id);
 
         return view('posts/show.html.twig', compact('post'));
     }
 
-     public function edit(int $id): Response
+    public function edit(int $id): Response
     {
         // Your logic here
         $post = $this->postRepository->findById($id);
@@ -86,7 +86,7 @@ class PostController extends Controller
     public function update(int $id): Response
     {
         $request = new Request();
-        $post = $this->postRepository->findOrFail($id);
+        $post    = $this->postRepository->findOrFail($id);
 
         $title       = $this->request->input('title');
         $description = $this->request->input('description');
@@ -105,11 +105,10 @@ class PostController extends Controller
         return Response::redirect("/posts");
     }
 
-
     public function destroy(int $id): Response
     {
         $this->postRepository->delete($id);
-        // flash('success', 'Post deleted successfully');
+        // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully Deleted')); // step 2
         return Response::redirect("/posts");
     }
 }
