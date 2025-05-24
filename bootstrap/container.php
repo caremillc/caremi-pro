@@ -112,6 +112,13 @@ $container->addShared(
     Careminate\Sessions\Session::class
 );
 
+// Register the RouterDispatch middleware and inject the router and container for route resolution and dependency injection.
+$container->add(\Careminate\Http\Middlewares\RouterDispatch::class)
+    ->addArguments([
+        \Careminate\Routing\RouterInterface::class,
+        $container
+    ]);
+    
 // Debug output (should be removed in production)
 // dd($container);
 
