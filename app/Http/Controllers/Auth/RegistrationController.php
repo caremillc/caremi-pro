@@ -1,20 +1,15 @@
-<?php declare(strict_types=1);
+<?php
 namespace App\Http\Controllers\Auth;
 
+use App\Http\Controllers\Controller;
 use App\Models\Register;
 use App\Repository\UserMapper;
-use App\Repository\UserRepository;
-use App\Http\Controllers\Controller;
 use Careminate\Http\Responses\Response;
-use Careminate\Authentication\SessionAuthentication;
 
 class RegistrationController extends Controller
 {
-     public function __construct(
-        private UserMapper $userMapper,
-        // private UserRepository $userRepository,
-        // private SessionAuthentication $auth
-    ) {}
+    public function __construct(private UserMapper $userMapper)
+    {}
 
     public function index(): Response
     {
@@ -54,7 +49,7 @@ class RegistrationController extends Controller
 
         $user = $user->save();
         
-        // dd($user); 
+        dd($user); 
         // Add a session success message
         flash('success', sprintf('User successfully created'));
         // $this->request->getSession()->setFlash(
@@ -62,8 +57,9 @@ class RegistrationController extends Controller
         //     sprintf('User %s created', $user->getUsername())
         // );
         // Log the user in
-        //   $this->auth->login($user);
+        // $this->authComponent->login($user);
         // Redirect to somewhere useful
         return redirect('/admin/dashboard');
     }
+
 }
