@@ -3,20 +3,35 @@ namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
 use App\Repository\PostMapper;
+use App\Repository\PostRepository;
 use App\Http\Controllers\Controller;
 use Careminate\Support\FileUploader;
+use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
 
 
 class PostController extends Controller
 { 
-    public function __construct(private PostMapper $postMapper){}
+      public function __construct(
+        private PostMapper $postMapper,
+        private PostRepository $postRepository
+    ){}
     
-    public function index(): Response
-    { 
-        $posts = "All Posts";
+    public function index()
+    {
+        $request = new Request();
+        $page    = max(1, (int) $request->get('page', 1));
+        $perPage = 5;
+        $offset  = ($page - 1) * $perPage;
 
-       return view('posts/index.html.twig', compact('posts'));
+        $posts = $this->postRepository->paginate($perPage, $offset);
+        $total = $this->postRepository->count();
+
+        return view('posts/index.html.twig', [
+            'posts'       => $posts,
+            'currentPage' => $page,
+            'totalPages'  => ceil($total / $perPage),
+        ]);
     }
 
     public function create(): Response
@@ -55,29 +70,47 @@ class PostController extends Controller
          return new Response("/posts");
     }
 
-    public function show(int $id): Response
+   public function show(int $id): Response
     {
-        // Your logic here
-        $postId = "<h1>Show Post with ID: $id</h1>";
-        return view('posts/show.html.twig', compact('postId'));
+        $post = $this->postRepository->findById($id);
+
+        return view('posts/show.html.twig', compact('post'));
     }
 
-    public function edit(int $id): Response
+     public function edit(int $id): Response
     {
         // Your logic here
-        $postId = "<h1>Edit Post with ID: $id</h1>";
-        return view('posts/edit.html.twig', compact('postId'));
+        $post = $this->postRepository->findById($id);
+        return view('posts/edit.html.twig', compact('post'));
     }
 
     public function update(int $id): Response
     {
-        // Your logic here
-        return new Response("<h1>Update Post with ID: $id</h1>");
+        $request = new Request();
+        $post = $this->postRepository->findOrFail($id);
+
+        $title       = $this->request->input('title');
+        $description = $this->request->input('description');
+        $imagePath   = $post->getImage();
+
+        if (isset($_FILES['image']) && $_FILES['image']['error'] === UPLOAD_ERR_OK) {
+            $imagePath = FileUploader::store($_FILES['image'], storage_path('app/public/images'));
+        }
+
+        $post->setTitle($title);
+        $post->setDescription($description);
+        $post->setImage($imagePath);
+
+        $this->postRepository->update($post);
+
+        return Response::redirect("/posts");
     }
 
-    public function delete(int $id): Response
+
+    public function destroy(int $id): Response
     {
-        // Your logic here
-        return new Response("<h1>Delete Post with ID: $id</h1>");
+        $this->postRepository->delete($id);
+        // flash('success', 'Post deleted successfully');
+        return Response::redirect("/posts");
     }
 }

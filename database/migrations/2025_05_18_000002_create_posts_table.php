@@ -25,8 +25,8 @@ $posts->addColumn("id", Types::INTEGER, ["autoincrement" => true]);
 $posts->addColumn("title", Types::STRING, ["length" => 255]);
 $posts->addColumn("description", Types::STRING, ["length" => 255]);
 $posts->addColumn("image", Types::BLOB);
-$users->addColumn("created_at", Types::DATETIME_MUTABLE,["notnull" => false]);
-$users->addColumn("updated_at", Types::DATETIME_MUTABLE,["notnull" => false]);
+$posts->addColumn("created_at", Types::DATETIME_MUTABLE,["notnull" => false]);
+$posts->addColumn("updated_at", Types::DATETIME_MUTABLE,["notnull" => false]);
 $posts->setPrimaryKey(["id"]);
 
 // Generate and run SQL
