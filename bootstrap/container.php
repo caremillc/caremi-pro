@@ -53,12 +53,11 @@ $container->addShared(\Doctrine\DBAL\Connection::class, function () use ($contai
 // Bind RouterInterface to Router implementation
 $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\Router::class);
 
-// Register the RequestHandler service which implements the RequestHandlerInterface.
-// This handler is responsible for processing the middleware stack.
+// Register the RequestHandler service and inject the container itself for resolving middleware dependencies.
 $container->add(
     \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class,
     \Careminate\Http\Middlewares\RequestHandler::class
-);
+)->addArgument($container);
 
 // Register the Kernel service, which is the main entry point for handling HTTP requests.
 // It receives the Router, the container itself, and the middleware RequestHandler as dependencies.
