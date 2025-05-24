@@ -2,19 +2,21 @@
 namespace App\Http\Controllers\Post;
 
 use App\Entity\Post;
-use App\Http\Controllers\Controller;
 use App\Repository\PostMapper;
 use App\Repository\PostRepository;
+use App\Http\Controllers\Controller;
+use Careminate\Support\FileUploader;
 use Careminate\Http\Requests\Request;
 use Careminate\Http\Responses\Response;
-use Careminate\Support\FileUploader;
+use Careminate\Sessions\SessionInterface;
 
 class PostController extends Controller
 {
-    public function __construct(
+   public function __construct(
         private PostMapper $postMapper,
-        private PostRepository $postRepository
-    ) {}
+        private PostRepository $postRepository,
+        private SessionInterface $session
+    ){}
 
     public function index()
     {
@@ -39,7 +41,7 @@ class PostController extends Controller
         return view('posts/create.html.twig');
     }
 
-   public function store(): Response
+    public function store(): Response
     {
        
         $title       = $this->request->input('title');
@@ -65,10 +67,9 @@ class PostController extends Controller
     //   dd($post);
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
-       // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
+         $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully created', $title)); // step 2
          return redirect("/posts");
     }
-
     public function show(int $id): Response
     {
         $post = $this->postRepository->findById($id);
