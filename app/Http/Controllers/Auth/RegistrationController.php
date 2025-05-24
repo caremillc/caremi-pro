@@ -66,5 +66,4 @@ class RegistrationController extends Controller
         // Redirect to somewhere useful
         return redirect('/admin/dashboard');
     }
-
 }
