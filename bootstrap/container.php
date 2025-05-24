@@ -36,6 +36,20 @@ $container->add('APP_ENV', new \League\Container\Argument\Literal\StringArgument
 $container->add('APP_KEY', new \League\Container\Argument\Literal\StringArgument($appKey));
 $container->add('APP_VERSION', new \League\Container\Argument\Literal\StringArgument($appVersion));
 
+# start database connection
+$dbConfig = require BASE_PATH . '/config/database.php';
+$defaultDriver = $dbConfig['default'];
+$driverConfig = $dbConfig['drivers'][$defaultDriver];
+
+$container->add(Careminate\Databases\Dbal\Connections\Contracts\ConnectionInterface::class, Careminate\Databases\Dbal\Connections\ConnectionFactory::class)
+    ->addArgument($driverConfig);
+# Optional – Register DB Connection globally in container
+$container->addShared(\Doctrine\DBAL\Connection::class, function () use ($container) {
+    return $container->get(Careminate\Databases\Dbal\Connections\Contracts\ConnectionInterface::class)->create();
+});
+
+# end database connection
+
 // Bind RouterInterface to Router implementation
 $container->add(\Careminate\Routing\RouterInterface::class, \Careminate\Routing\Router::class);
 
