@@ -25,7 +25,6 @@ return [
    ['PUT', '/users/{id}/update', [App\Http\Controllers\User\UserController::class, 'update']],
    ['DELETE', '/users/{id}/delete', [App\Http\Controllers\User\UserController::class, 'delete']],
 
-
 //response
    ['GET', '/Hello/{name:.+}', function (string $name) {
        return new Response("Hello $name");
