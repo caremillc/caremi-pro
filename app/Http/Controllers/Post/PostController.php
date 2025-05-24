@@ -62,7 +62,6 @@ class PostController extends Controller
 
         // Create the post
         $post = Post::create(null, $title, $description, $imagePath, null);
-
     //   dd($post);
         $this->postMapper->save($post);
         // Debugging output (remove after testing)
