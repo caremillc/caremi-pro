@@ -61,13 +61,23 @@ $container->add(
 
 // Register the Kernel service, which is the main entry point for handling HTTP requests.
 // It receives the Router, the container itself, and the middleware RequestHandler as dependencies.
-$container->add(\Careminate\Http\Kernel::class)
-    ->addArguments([
-        \Careminate\Routing\RouterInterface::class,                    // Router for route resolution
-        $container,                                                    // Service container for resolving dependencies
-        \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class // Middleware pipeline handler
-    ]);
+// $container->add(\Careminate\Http\Kernel::class)
+//     ->addArguments([
+//         \Careminate\Routing\RouterInterface::class,                    // Router for route resolution
+//         $container,                                                    // Service container for resolving dependencies
+//         \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class // Middleware pipeline handler
+//     ]);
 
+// Register the HTTP Kernel and inject its dependencies:
+// - the container itself,
+// - the request handler interface implementation,
+// - and the event dispatcher for managing lifecycle events.
+$container->add(Careminate\Http\Kernel::class)
+    ->addArguments([
+        $container, 
+        \Careminate\Http\Middlewares\Contracts\RequestHandlerInterface::class,
+        \Careminate\Databases\Dbal\EventDispatcher\EventDispatcher::class
+    ]);
 
 #parameters
 // Load application routes from an external configuration file.
@@ -127,6 +137,9 @@ $container->add(\Careminate\Authentication\SessionAuthentication::class)
 $container->add(\Careminate\Http\Middlewares\ExtractRouteInfo::class)
            ->addArgument(new \League\Container\Argument\Literal\ArrayArgument($routes));
 
+// Register the EventDispatcher as a shared (singleton) service in the container,
+// ensuring the same instance is used throughout the application lifecycle.
+$container->addShared(\Careminate\Databases\Dbal\EventDispatcher\EventDispatcher::class);
 
 // Debug output (should be removed in production)
 // dd($container);

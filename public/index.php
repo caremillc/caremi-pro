@@ -15,6 +15,8 @@
 use Careminate\Http\Kernel;
 use Careminate\Routing\Router;
 use Careminate\Http\Requests\Request;
+use Careminate\EventListener\ContentLengthListener;
+use Careminate\EventListener\InternalErrorListener;
 
 // Define application constants
 define('CAREMI_START', microtime(true));  // Application start time for performance tracking
@@ -38,6 +40,18 @@ $container = require BASE_PATH . '/bootstrap/container.php';  // Load DI contain
  */
 $request = Request::createFromGlobals();  // Create request from PHP globals
 $router = new Router();                   // Initialize router
+
+
+// Retrieve the DBAL-specific EventDispatcher from the container and register multiple listeners 
+// for the ResponseEvent. These listeners handle internal error responses and manage Content-Length headers.
+$eventDispatcher = $container->get(\Careminate\Databases\Dbal\EventDispatcher\EventDispatcher::class);
+$eventDispatcher->addListener(
+    \Careminate\Databases\Dbal\EventDispatcher\ResponseEvent::class,
+    new InternalErrorListener()
+)->addListener(
+    \Careminate\Databases\Dbal\EventDispatcher\ResponseEvent::class,
+    new ContentLengthListener()
+);
 
 
 // Initializes the application's kernel 
