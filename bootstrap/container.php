@@ -74,9 +74,13 @@ $container->add(\Careminate\Http\Kernel::class)
 $routes = include BASE_PATH . '/routes/web.php';
 
 // Extend RouterInterface definition to inject routes
-$container->extend(Careminate\Routing\RouterInterface::class)
-          ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
-       
+// $container->extend(Careminate\Routing\RouterInterface::class)
+//           ->addMethodCall('setRoutes',[new League\Container\Argument\Literal\ArrayArgument($routes)]);
+
+// Register the ExtractRouteInfo middleware and inject the route definitions as a literal array argument.
+$container->add(\Careminate\Http\Middlewares\ExtractRouteInfo::class)
+           ->addArgument(new \League\Container\Argument\Literal\ArrayArgument($routes));
+
 # Start Twig Environment
 
 // Register a factory that will be responsible for creating the Twig environment instance.
@@ -125,6 +129,7 @@ $container->add(\Careminate\Authentication\SessionAuthentication::class)
         \App\Repository\UserRepository::class,
         \Careminate\Sessions\SessionInterface::class
     ]);
+
 
 
 // Debug output (should be removed in production)
