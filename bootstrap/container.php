@@ -143,6 +143,14 @@ $container->add(\Careminate\Http\Middlewares\ExtractRouteInfo::class)
 // ensuring the same instance is used throughout the application lifecycle.
 $container->addShared(\Careminate\Databases\Dbal\EventDispatcher\EventDispatcher::class);
 
+// Load container extensions
+$extensionsFile = $basePath . '/config/services.php';
+if (file_exists($extensionsFile)) {
+    $extensions = include $extensionsFile;
+    if (is_callable($extensions)) {
+        $extensions($container);
+    }
+}
 // Debug output (should be removed in production)
 // dd($container);
 

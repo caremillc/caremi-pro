@@ -1,0 +1,31 @@
+#!/usr/bin/env php
+<?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+
+$commands = require __DIR__ . '/config/console.php';
+
+$input = $argv[1] ?? null;
+
+if (!$input) {
+    echo "Usage: php caremi [command] [--options]" . PHP_EOL;
+    exit(1);
+}
+
+if (!isset($commands[$input])) {
+    echo "Command [$input] not found." . PHP_EOL;
+    exit(1);
+}
+
+$commandClass = $commands[$input];
+$command = new $commandClass();
+
+if (!method_exists($command, 'handle')) {
+    echo "Command [$input] does not have a handle() method." . PHP_EOL;
+    exit(1);
+}
+
+// Pass remaining args to handle(), skipping the command name
+$args = array_slice($argv, 2);
+
+$command->handle($args);
