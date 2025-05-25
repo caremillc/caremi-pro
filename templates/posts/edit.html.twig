@@ -5,7 +5,11 @@
 
     <form action="/posts/{{ post.id }}/update" method="post" enctype="multipart/form-data">
     {{ csrf() }}
-        <input type="hidden" name="_method" value="PUT"> {# For method spoofing if needed #}
+
+    <!-- HTTP Method Spoofing (PUT) -->
+    {{ method('PUT') }}
+
+        {# <input type="hidden" name="_method" value="PUT"> For method spoofing if needed #}
 
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
