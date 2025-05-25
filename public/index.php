@@ -15,6 +15,7 @@
 use Careminate\Http\Kernel;
 use Careminate\Routing\Router;
 use Careminate\Http\Requests\Request;
+use Careminate\EventDispatcher\ResponseEvent;
 use Careminate\EventListener\ContentLengthListener;
 use Careminate\EventListener\InternalErrorListener;
 
@@ -26,10 +27,13 @@ define('ROOT_DIR', dirname(__FILE__));
 
 // Load dependencies
 require dirname(__DIR__) . '/vendor/autoload.php';  // Composer autoloader
-require BASE_PATH . '/bootstrap/app.php';            // Application initialization
+
 //require BASE_PATH . '/bootstrap/performance.php';   // Performance optimizations
 $container = require BASE_PATH . '/bootstrap/container.php';  // Load DI container
-
+require BASE_PATH . '/bootstrap/app.php';            // Application initialization
+// $eventDispatcher = $container->get(\Careminate\EventDispatcher\EventDispatcher::class);
+// $eventDispatcher->addListener(ResponseEvent::class,new InternalErrorListener())
+//                 ->addListener(ResponseEvent::class,new ContentLengthListener());
 /**
  * Handle incoming HTTP request
  * 
@@ -40,18 +44,6 @@ $container = require BASE_PATH . '/bootstrap/container.php';  // Load DI contain
  */
 $request = Request::createFromGlobals();  // Create request from PHP globals
 $router = new Router();                   // Initialize router
-
-
-// Retrieve the DBAL-specific EventDispatcher from the container and register multiple listeners 
-// for the ResponseEvent. These listeners handle internal error responses and manage Content-Length headers.
-$eventDispatcher = $container->get(\Careminate\Databases\Dbal\EventDispatcher\EventDispatcher::class);
-$eventDispatcher->addListener(
-    \Careminate\Databases\Dbal\EventDispatcher\ResponseEvent::class,
-    new InternalErrorListener()
-)->addListener(
-    \Careminate\Databases\Dbal\EventDispatcher\ResponseEvent::class,
-    new ContentLengthListener()
-);
 
 
 // Initializes the application's kernel 

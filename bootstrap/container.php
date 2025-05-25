@@ -24,8 +24,10 @@ $container = new \League\Container\Container();
 // Enable auto-resolution of dependencies through reflection
 $container->delegate(new \League\Container\ReflectionContainer(true));
 
+$basePath = dirname(__DIR__);
+$container->add('basePath', new \League\Container\Argument\Literal\StringArgument($basePath));
 # twig template path
-$templatesPath = BASE_PATH . '/templates';
+$templatesPath = $basePath . '/templates';
 
 #env parameters
 $appEnv = env('APP_ENV', 'production'); // Default to 'production' if not set
@@ -37,7 +39,7 @@ $container->add('APP_KEY', new \League\Container\Argument\Literal\StringArgument
 $container->add('APP_VERSION', new \League\Container\Argument\Literal\StringArgument($appVersion));
 
 # start database connection
-$dbConfig = require BASE_PATH . '/config/database.php';
+$dbConfig = require $basePath . '/config/database.php';
 $defaultDriver = $dbConfig['default'];
 $driverConfig = $dbConfig['drivers'][$defaultDriver];
 
@@ -81,7 +83,7 @@ $container->add(Careminate\Http\Kernel::class)
 
 #parameters
 // Load application routes from an external configuration file.
-$routes = include BASE_PATH . '/routes/web.php';
+$routes = include $basePath . '/routes/web.php';
 
 
 # Start Twig Environment
