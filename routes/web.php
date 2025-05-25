@@ -45,7 +45,9 @@ return [
     ['GET', '/admin/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index'
     , [Authenticate::class, DummyMiddleware::class]
     ]],
-
+    
+  // logout
+  ['GET', '/logout', [\App\Http\Controllers\Auth\LoginController::class, 'logout',[Authenticate::class]]],
     //response
     ['GET', '/Hello/{name:.+}', function (string $name) {
         return new Response("Hello $name");
