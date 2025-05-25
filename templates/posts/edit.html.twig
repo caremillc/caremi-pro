@@ -4,6 +4,7 @@
     <h1>Edit Post</h1>
 
     <form action="/posts/{{ post.id }}/update" method="post" enctype="multipart/form-data">
+    {{ csrf() }}
         <input type="hidden" name="_method" value="PUT"> {# For method spoofing if needed #}
 
         <div class="mb-3">
