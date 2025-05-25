@@ -23,4 +23,5 @@ class LoginController extends Controller
         // Redirect the user to intended location
         return redirect('/');
     }
+    
 }
