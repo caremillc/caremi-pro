@@ -20,7 +20,7 @@ class PostController extends Controller
     ){}
     
     public function index()
-    {
+    { 
         $request = new Request();
         $page    = max(1, (int) $request->get('page', 1));
         $perPage = 5;

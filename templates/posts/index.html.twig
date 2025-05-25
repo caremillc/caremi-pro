@@ -29,12 +29,12 @@
                             <td>{{ loop.index }}</td>
                             <td>{{ post.title }}</td>
                             <td>{{ post.description|length > 100 ? post.description[:100] ~ '...' : post.description }}</td>
-                            <td>
-                                {% if post.image %}
-                                    <img src="/storage/images/{{ post.image }}" alt="{{ post.title }}" style="width: 80px; height: auto;">
-                                {% else %}
-                                    <span class="text-muted">No image</span>
-                                {% endif %}
+                           <td>
+                               {% if post.image %}
+                                <img src="{{ asset('storage/images/' ~ post.image) }}" alt="{{ post.title }}" style="width: 80px; height: auto;">
+                            {% else %}
+                                <span class="text-muted">No image</span>
+                            {% endif %}
                             </td>
                             <td>
                                 <a href="/posts/{{ post.id }}/show" class="btn btn-sm btn-primary">View</a>
