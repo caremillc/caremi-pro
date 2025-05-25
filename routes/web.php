@@ -1,7 +1,8 @@
 <?php // routes/web.php
 
 use Careminate\Http\Responses\Response;
-
+use Careminate\Http\Middlewares\Authenticate;
+use Careminate\Http\Middlewares\DummyMiddleware;
 
 return [
    //home
@@ -32,12 +33,13 @@ return [
        //login
      ['GET', '/login', [\App\Http\Controllers\Auth\LoginController::class, 'loginForm']],
      ['POST', '/login', [\App\Http\Controllers\Auth\LoginController::class, 'login']],
-       //dashboard 
-    ['GET', '/admin/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index']],
+    
+     //dashboard 
+    ['GET', '/dashboard', [\App\Http\Controllers\Dashboard\DashboardController::class, 'index',[Authenticate::class, DummyMiddleware::class]]],
+
 //response
    ['GET', '/Hello/{name:.+}', function (string $name) {
        return new Response("Hello $name");
    }],
 
-   
 ];
