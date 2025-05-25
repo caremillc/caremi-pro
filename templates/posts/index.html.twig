@@ -4,7 +4,7 @@
 {% block main %}
     <div class="d-flex justify-content-between align-items-center mb-4">
         <h1 class="h3">All Posts</h1>
-        <a href="/posts/create" class="btn btn-success">Create New Post</a>
+       <a href="{{ url('/posts/create') }}" class="btn btn-primary mb-3">Create New Post</a>
     </div>
 
     {% if posts is empty %}
@@ -40,10 +40,13 @@
                                 <a href="/posts/{{ post.id }}/show" class="btn btn-sm btn-primary">View</a>
                                 <a href="/posts/{{ post.id }}/edit" class="btn btn-sm btn-warning">Edit</a>
                                 
-                                <form action="/posts/{{ post.id }}/delete" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this post?');">
-                                    <input type="hidden" name="_method" value="DELETE">
+                               <form action="/posts/{{ post.id }}/delete" method="POST" style="display: inline-block;" onsubmit="return confirm('Are you sure you want to delete this post?');">
+                                    {# <input type="hidden" name="_method" value="DELETE"> #}
+                                    {{ csrf() }}
+                                    {{ method('DELETE') }}
                                     <button class="btn btn-sm btn-danger">Delete</button>
                                 </form>
+			
                             </td>
                         </tr>
 

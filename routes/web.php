@@ -18,7 +18,7 @@ return [
     ['GET', '/posts/{id}/show', [\App\Http\Controllers\Post\PostController::class, 'show']],
     ['GET', '/posts/{id}/edit', [App\Http\Controllers\Post\PostController::class, 'edit']],
     ['PUT', '/posts/{id}/update', [App\Http\Controllers\Post\PostController::class, 'update']],
-    ['DELETE', '/posts/{id}/delete', [App\Http\Controllers\Post\PostController::class, 'delete']],
+    ['DELETE', '/posts/{id}/delete', [App\Http\Controllers\Post\PostController::class, 'destroy']],
 
     //users
     ['GET', '/users', [App\Http\Controllers\User\UserController::class, 'index']],
@@ -27,7 +27,7 @@ return [
     ['GET', '/users/{id}/show', [\App\Http\Controllers\User\UserController::class, 'show']],
     ['GET', '/users/{id}/edit', [App\Http\Controllers\User\UserController::class, 'edit']],
     ['PUT', '/users/{id}/update', [App\Http\Controllers\User\UserController::class, 'update']],
-    ['DELETE', '/users/{id}/delete', [App\Http\Controllers\User\UserController::class, 'delete']],
+    ['DELETE', '/users/{id}/delete', [App\Http\Controllers\User\UserController::class, 'destroy']],
 
     //register
     ['GET', '/register', [\App\Http\Controllers\Auth\RegistrationController::class, 'index'

@@ -112,7 +112,7 @@ class PostController extends Controller
     public function destroy(int $id): Response
     {
         $this->postRepository->delete($id);
-       // $this->request->getSession()->setFlash('success', sprintf('Post "%s" successfully Deleted')); // step 2
+        flash('success', sprintf('Post "%s" successfully Deleted')); // step 2
         return Response::redirect("/posts");
     }
 }
