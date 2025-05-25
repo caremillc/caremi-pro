@@ -12,14 +12,11 @@ class DashboardController extends Controller
 
     public function index(): Response
     {
-          try {
-            // Attempt to retrieve the logged-in user
-            $user = $this->auth->getUser();
-            // dd($user);
-        } catch (\LogicException $e) {
-            // Handle the case when there is no logged-in user
+        if (! $this->auth->check()) {
             return redirect('/login');
         }
+          $user = $this->auth->getUser();
+         
         return view('admin/dashboard.html.twig',compact('user'));
     }
 }
